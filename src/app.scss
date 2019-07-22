@@ -1,0 +1,14 @@
+.search{
+    display: flex;
+    flex-direction: column;
+
+    &__results {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__pic {
+        width: 30%;
+        margin: 0px 14px;
+    }
+}
