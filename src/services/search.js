@@ -1,40 +1,50 @@
-const search = async (query) => {
-    const enablecors = 'https://cors-anywhere.herokuapp.com/';
-    const host = 'https://content.googleapis.com';
-    const cx='015708995729795073046:a6lqchqd__u';
-    const key ='AIzaSyCPf_rnItQABhVctkO59JGQbfX1dERmy6w';
-    const googlesearch = `${enablecors}${host}/customsearch/v1?q=${query}&cx=${cx}&key=${key}`;
+import React from 'react';
 
-    const headers =  new Headers([
-        ['X-Referer', 'https://content.googleapis.com']
+class SearchService extends React.Component {
+  constructor(text) {
+    super();
+    this.enablecors = 'https://cors-anywhere.herokuapp.com/';
+    this.host = 'https://content.googleapis.com';
+    this.cx='015708995729795073046:a6lqchqd__u';
+    this.key ='AIzaSyCPf_rnItQABhVctkO59JGQbfX1dERmy6w';
+    
+    this.getHeaders = this.getHeaders.bind(this);
+    this.getSearchURL = this.getSearchURL.bind(this);
+    this.search = this.search.bind(this);
+    this.getImages = this.getImages.bind(this);
+  }
+
+  getHeaders() {
+    return new Headers([
+        ['X-Referer', this.host]
     ]);
+  }
 
-    const init = { 
-        headers
-    };
+  getSearchURL(query) {
+    return `${this.enablecors}${this.host}/customsearch/v1?q=${query}&cx=${this.cx}&key=${this.key}&start=11`
+  }
 
-    const request  = new Request(googlesearch, init);
+  async search(query) {
+    const url = this.getSearchURL(query);
+    const searchResult = await fetch(url, {
+        method: 'GET',
+        headers: this.getHeaders()
+      })
+        .then(res => res.json())
+        .catch(error => Promise.reject(error));
+    return searchResult;
+  }
 
-    let searchResult;
+  async getImages(query) {
+    const searchResult = await this.search(query);
 
-    const fetchResponsePromise = fetch(request)
-    .then(function(response) {
-        return response.json();
-    })
-    .then(function(response) {
-        searchResult = response;
-    });
-
-    await fetchResponsePromise;
-
-    const imagesLinks = searchResult.items.reduce((result, item) => {
+    return searchResult.items.reduce((result, item) => {
       if (item.pagemap.cse_image) {
-        result.push(item.pagemap.cse_image[0].src);
+          result.push(item.pagemap.cse_image[0].src);
       }
-      return result; 
+      return result;
     }, []);
-
-    return imagesLinks;
+  }
 };
 
-export default search;
+export default new SearchService;
