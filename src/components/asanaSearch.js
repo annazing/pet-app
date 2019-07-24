@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import SearchService from '../services/search';
 import AsanaPicture from './asanaPicture';
 import { addAsana } from '../actions/actions';
+import { requestSearch, searchSuccess } from '../actions/actions';
 import '../app.scss';
 
 class AsanaSearch extends Component {
@@ -41,16 +42,16 @@ class AsanaSearch extends Component {
           <div className="search">
             <form className="search__form" onSubmit={this.onSearchSubmit}>
               <label> Search asana: </label>
-              <input className="search__input"onChange={this.onSearchInput} />
+              <input className="search__input" onChange={this.onSearchInput} />
             </form>
-            {this.state.imgs.length &&
+            {this.state.imgs.length > 0 &&
               <div className="search__results">
                   {this.state.imgs.map((imgSrc, index) => (
                     <AsanaPicture 
                       imgSrc={imgSrc}
                       onClick = {() => this.onAddToFlowClick(imgSrc) }
                       btnText = 'Add to flow'
-                      key={index}
+                      key={`imgIndex-${indeex}`}
                     />
                   ))}
               </div>
@@ -60,7 +61,25 @@ class AsanaSearch extends Component {
     }
 };
 
+const mapStateToProps = (state) => {
+  // const {
+  //   search : {loading, resultsPage, results}
+  // } = state;
+
+  // return {
+  //   loading,
+  //   resultsPage,
+  //   results
+  // };
+
+  return state;
+};
+
 export default connect(
-  null,
-  {addAsana}
+  mapStateToProps,
+  { 
+    addAsana,
+    requestSearch,
+    searchSuccess
+  }
 )(AsanaSearch);;

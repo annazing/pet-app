@@ -1,7 +1,7 @@
 import React from 'react';
 
 class SearchService extends React.Component {
-  constructor(text) {
+  constructor() {
     super();
     this.enablecors = 'https://cors-anywhere.herokuapp.com/';
     this.host = 'https://content.googleapis.com';
@@ -39,7 +39,7 @@ class SearchService extends React.Component {
     const searchResult = await this.search(query);
 
     return searchResult.items.reduce((result, item) => {
-      if (item.pagemap.cse_image) {
+      if (item.pagemap && item.pagemap.cse_image) {
           result.push(item.pagemap.cse_image[0].src);
       }
       return result;

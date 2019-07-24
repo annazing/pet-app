@@ -1,8 +1,9 @@
 import {createStore} from 'redux';
-import yogaFlowReducer from '../reducers/reducer'
+import rootReducer from '../reducers/reducer';
+import { devToolsEnhancer  } from 'redux-devtools-extension';
 
 const configureStore = () => {
-    const store = createStore (yogaFlowReducer);
+    const store = createStore (rootReducer, devToolsEnhancer());
 
     return store;
 }

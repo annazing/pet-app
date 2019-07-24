@@ -33,7 +33,7 @@ const YogaSequence = ({sequence, deleteAsana}) => {
 //mapStateToProps: called every time the store state changes. 
 //It receives the entire store state, and should return an object of data this component needs.
 const mapStateToProps = state => {
-    return state; 
+    return { sequence: state.sequence } ; 
 }
 
 YogaSequence.propTypes = {
