@@ -51,14 +51,14 @@ const yogaFlowReducer = (state = initialState.sequence, action) => {
 const searchReducer = (state = initialState.search, action) => {
   switch (action.type) {
     case SEARCH_REQUEST :
-      return Object.assign({}, state, {
+      return {
         ...state,
         loading: action.payload.loading,
         phrase: action.payload.phrase,
         resultsPage: action.payload.resultsPage,
-      });
+      };
     case SEARCH_SUCCESS :
-      return Object.assign({}, state, {
+      return {
         ...state,
         loading: action.payload.loading,
         error: {
@@ -67,16 +67,16 @@ const searchReducer = (state = initialState.search, action) => {
         },
         resultsPage: action.payload.resultsPage,
         results: action.payload.results
-      });
+      };
     case SEARCH_FAILURE :
-      return Object.assign({}, state, {
+      return {
         ...state,
         loading: action.payload.loading,
         error: {
           isError: true,
           message: action.payload.error
         }
-      }); 
+      }; 
     default:
       return state;
   }

@@ -31,17 +31,13 @@ class SearchService extends React.Component {
         headers: this.getHeaders()
       })
         .then(res => res.json())
-        // .then(res => Promise.reject('Its an error'))
         .catch(error => Promise.reject(error));
     return searchResult;
   }
 
   async getImages(query, page = 1) {
-    // try {
-      const searchResult = await this.search(query, page);
-    // } catch (error) {
-    //   return error;
-    // }
+    const searchResult = await this.search(query, page);
+
 
     if (!searchResult.items) {
       return [];
