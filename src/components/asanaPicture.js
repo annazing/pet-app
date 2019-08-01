@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from 'prop-types';
 
 const AsanaPicture = ({ imgSrc, onClick, btnText }) => (
-  <div className="search__item-container">
-    <img src={imgSrc} className="search__pic"></img>
-    <div className="search__middle-on-pic">
-      <button className="search__btn-on-pic" onClick={onClick}>{btnText}</button>
+  <div>
+    <img src={imgSrc} className="asanas__pic"></img>
+    <div className="asanas__middle-on-pic">
+      <button className="asanas__btn-on-pic" onClick={onClick}>{btnText}</button>
     </div>
   </div>
 );

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SearchService from '../services/search';
-import AsanaPicture from './asanaPicture';
-import { addAsana } from '../actions/actions';
-import '../app.scss';
+import AsanasList from './asanasList';
+import Pagination from './pagination/index';
+import Notification from './notification/index'
+import { addAsana, fetchSearchResults } from '../actions/actions';
+import '../scss/app.scss';
 
 class AsanaSearch extends Component {
     constructor(props) {
@@ -13,54 +14,96 @@ class AsanaSearch extends Component {
         this.onAddToFlowClick = this.onAddToFlowClick.bind(this);
         this.store = this.context;
         this.state = {
-          search: '',
-          imgs: [] 
+          search: ''
         };
     }
 
-    async onSearchSubmit(event) {
-        event.preventDefault();
+    onSearchSubmit(event) {
+      event.preventDefault();
 
-        const result = await SearchService.getImages(this.state.search);
-        this.setState({ imgs: result })
+      this.props.fetchSearchResults(this.state.search);
     };
 
     onSearchInput(event) {
       this.setState({ search: event.target.value });
     };
 
-    onAddToFlowClick (imgSrc) { 
+    onAddToFlowClick (asana) {
       this.props.addAsana({
-        asanaName: this.state.search,
-        asanaSrc: imgSrc
+        id: asana.id,
+        asanaName: asana.asanaName,
+        asanaSrc: asana.asanaSrc
       });
     };
 
+    isNothingFound () {
+      return (this.props.phrase.length > 0 && this.props.results.length === 0);
+    }
+
     render() {
         return (
-          <div className="search">
-            <form className="search__form" onSubmit={this.onSearchSubmit}>
-              <label> Search asana: </label>
-              <input className="search__input"onChange={this.onSearchInput} />
+          <div className="asanas">
+            <form className="asanas__search-form" onSubmit={this.onSearchSubmit}>
+              <input
+                placeholder={'Search asana'}
+                className="asanas__search-input"
+                onChange={this.onSearchInput}
+              />
             </form>
-            {this.state.imgs.length &&
-              <div className="search__results">
-                  {this.state.imgs.map((imgSrc, index) => (
-                    <AsanaPicture 
-                      imgSrc={imgSrc}
-                      onClick = {() => this.onAddToFlowClick(imgSrc) }
-                      btnText = 'Add to flow'
-                      key={index}
-                    />
-                  ))}
-              </div>
+            <Notification 
+              loading={this.props.loading} 
+              error={this.props.error} 
+              isShowInfo={this.isNothingFound()}
+              infoText={'Nothing was found'}
+            />
+            {
+              this.props.results.length > 0 &&
+              <>
+                <h1>{this.props.phrase}</h1>
+                <AsanasList 
+                  asanas={this.props.results}
+                  onItemClick={this.onAddToFlowClick}
+                  btnText="Add to flow"
+                  showTitle={false}
+                />
+                <Pagination 
+                  pageNumber={this.props.resultsPage}
+                  textToSearch={this.state.search}
+                  fetchPage={this.props.fetchSearchResults}
+                />
+              </>
             }
           </div>
         );
     }
 };
 
+const mapStateToProps = (state) => {
+  const {
+    search : {loading, error, phrase, results, resultsPage}
+  } = state;
+
+  return {
+    loading,
+    error,
+    phrase,
+    resultsPage,
+    results
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addAsana: asana => {
+      dispatch(addAsana(asana))
+    },
+    fetchSearchResults: (phrase, page) => {
+       dispatch(fetchSearchResults(phrase, page));
+    }
+  }
+};
+
 export default connect(
-  null,
-  {addAsana}
+  mapStateToProps,
+  mapDispatchToProps
 )(AsanaSearch);;

@@ -1,0 +1,42 @@
+{
+    "flow" : [
+        {
+            "name" : "Setting",
+            "optional" : false
+        },
+        {
+            "name" : "Warm-up",
+            "optional" : true
+        },
+        {
+            "name" : "Sun-salutation",
+            "optional" : false
+        },
+        {
+            "name" : "Balancing, standing, bending",
+            "optional" : false
+        },
+        {
+            "name" : "Backbends",
+            "optional" : true
+        },
+        {
+            "name" : "Seated",
+            "optional" : false
+        },
+        {
+            "name" : "Complex-poses",
+            "optional" : true
+        },
+        {
+            
+            "name" : "Inversion-poses",
+            "optional" : true
+        },
+        {
+            
+            "name" : "Rest",
+            "optional" : false
+        }
+    ]
+}

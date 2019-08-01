@@ -1,7 +1,7 @@
 import React from 'react';
 
 class SearchService extends React.Component {
-  constructor(text) {
+  constructor() {
     super();
     this.enablecors = 'https://cors-anywhere.herokuapp.com/';
     this.host = 'https://content.googleapis.com';
@@ -20,12 +20,12 @@ class SearchService extends React.Component {
     ]);
   }
 
-  getSearchURL(query) {
-    return `${this.enablecors}${this.host}/customsearch/v1?q=${query}&cx=${this.cx}&key=${this.key}&start=11`
+  getSearchURL(query, page) {
+    return `${this.enablecors}${this.host}/customsearch/v1?q=${query}&cx=${this.cx}&key=${this.key}&start=${page}`
   }
 
-  async search(query) {
-    const url = this.getSearchURL(query);
+  async search(query, page) {
+    const url = this.getSearchURL(query, page);
     const searchResult = await fetch(url, {
         method: 'GET',
         headers: this.getHeaders()
@@ -35,12 +35,21 @@ class SearchService extends React.Component {
     return searchResult;
   }
 
-  async getImages(query) {
-    const searchResult = await this.search(query);
+  async getImages(query, page = 1) {
+    const searchResult = await this.search(query, page);
+
+
+    if (!searchResult.items) {
+      return [];
+    }
 
     return searchResult.items.reduce((result, item) => {
-      if (item.pagemap.cse_image) {
-          result.push(item.pagemap.cse_image[0].src);
+      if (item.pagemap && item.pagemap.cse_image) {
+          result.push({
+            id: item.cacheId,
+            asanaName: query,
+            asanaSrc: item.pagemap.cse_image[0].src
+          });
       }
       return result;
     }, []);
