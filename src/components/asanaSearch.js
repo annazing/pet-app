@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AsanasList from './asanasList';
 import Pagination from './pagination/index';
-import LoadingIndicator from './loading-indicator/index'
+import Notification from './notification/index'
 import { addAsana, fetchSearchResults } from '../actions/actions';
 import '../scss/app.scss';
 
@@ -36,6 +36,10 @@ class AsanaSearch extends Component {
       });
     };
 
+    isNothingFound () {
+      return (this.props.phrase.length > 0 && this.props.results.length === 0);
+    }
+
     render() {
         return (
           <div className="asanas">
@@ -46,27 +50,28 @@ class AsanaSearch extends Component {
                 onChange={this.onSearchInput}
               />
             </form>
+            <Notification 
+              loading={this.props.loading} 
+              error={this.props.error} 
+              isShowInfo={this.isNothingFound()}
+              infoText={'Nothing was found'}
+            />
             {
-              this.props.loading
-              ? <LoadingIndicator />
-              : this.props.error.isError 
-                ?  <div>{this.props.error.message}</div>
-                : <>
-                    <AsanasList 
-                      asanas={this.props.results}
-                      onItemClick={this.onAddToFlowClick}
-                      btnText="Add to flow"
-                      showTitle={false}
-                    />
-                    {
-                      this.props.results.length > 0 &&
-                      <Pagination 
-                        pageNumber={this.props.resultsPage}
-                        textToSearch={this.state.search}
-                        fetchPage={this.props.fetchSearchResults}
-                      />
-                    }
-                </>
+              this.props.results.length > 0 &&
+              <>
+                <h1>{this.props.phrase}</h1>
+                <AsanasList 
+                  asanas={this.props.results}
+                  onItemClick={this.onAddToFlowClick}
+                  btnText="Add to flow"
+                  showTitle={false}
+                />
+                <Pagination 
+                  pageNumber={this.props.resultsPage}
+                  textToSearch={this.state.search}
+                  fetchPage={this.props.fetchSearchResults}
+                />
+              </>
             }
           </div>
         );
@@ -75,12 +80,13 @@ class AsanaSearch extends Component {
 
 const mapStateToProps = (state) => {
   const {
-    search : {loading, error, results, resultsPage}
+    search : {loading, error, phrase, results, resultsPage}
   } = state;
 
   return {
     loading,
     error,
+    phrase,
     resultsPage,
     results
   };
