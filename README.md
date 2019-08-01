@@ -1,6 +1,7 @@
-# https://annazing.github.io/<br>
-<br>
+# https://annazing.github.io/
+
 ## Asanas list (Can be used for searching)
+
 Adho Mukha Svanasana<br>
 Adho Mukha Vrksasana<br>
 Agnistambhasana<br>
