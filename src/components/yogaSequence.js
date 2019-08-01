@@ -1,44 +1,51 @@
 import React from 'react';
-import AsanaPicture from './asanaPicture';
+import AsanasList from './asanasList';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { deleteAsana } from '../actions/actions';
+import { deleteAsana,clearSequence } from '../actions/actions';
 
-const YogaSequence = ({sequence, deleteAsana}) => {
-  const deleteFromSequence = (id) => {
-    deleteAsana(id);
-  };
-
+const YogaSequence = ({sequence, deleteAsana,clearSequence}) => {
   return (
     <div className="yoga-sequence">
+      <h2>My sequence</h2>
       {
         sequence && sequence.length
-          ? sequence.map((asana, index) => {
-              return <div key={asana.id}>
-                <p>{index}</p>
-                <p>{asana.asanaName}</p>
-                <AsanaPicture
-                  imgSrc={asana.asanaSrc}
-                  onClick = {() => deleteFromSequence(asana.id) }
-                  btnText = 'Delete from sequence'
-                />
-              </div>;
-            })
+          ? <div>
+              <AsanasList 
+                asanas={sequence}
+                onItemClick={deleteAsana}
+                btnText = 'Delete from sequence'
+                showTitle={true}
+              />
+              <button onClick={clearSequence}>Clear sequence</button>
+            </div>
           : "No asanas, yay!"
       }
     </div>
   );
 };
 
-//mapStateToProps: called every time the store state changes. 
-//It receives the entire store state, and should return an object of data this component needs.
 const mapStateToProps = state => {
     return { sequence: state.sequence } ; 
-}
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteAsana: asana => {
+      dispatch(deleteAsana(asana))
+    },
+    clearSequence: () => {
+       dispatch(clearSequence());
+    }
+  }
+};
 
 YogaSequence.propTypes = {
   sequence:  PropTypes.array.isRequired,
   deleteAsana: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, {deleteAsana} )(YogaSequence)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+  )(YogaSequence);

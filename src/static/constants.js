@@ -1,0 +1,7 @@
+export const ADD_ASANA = 'ADD_ASANA';
+export const DELETE_ASANA = 'DELETE_ASANA';
+export const CLEAR_SEQUENCE = 'CLEAR_SEQUENCE';
+
+export const SEARCH_REQUEST = 'SEARCH_REQUEST';
+export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
+export const SEARCH_FAILURE = 'SEARCH_FAILURE';

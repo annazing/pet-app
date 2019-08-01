@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SearchService from '../services/search';
-import AsanaPicture from './asanaPicture';
-import { addAsana } from '../actions/actions';
-import { requestSearch, searchSuccess } from '../actions/actions';
-import '../app.scss';
+import AsanasList from './asanasList';
+import Pagination from './pagination/index';
+import LoadingIndicator from './loading-indicator/index'
+import { addAsana, fetchSearchResults } from '../actions/actions';
+import '../scss/app.scss';
 
 class AsanaSearch extends Component {
     constructor(props) {
@@ -14,47 +14,59 @@ class AsanaSearch extends Component {
         this.onAddToFlowClick = this.onAddToFlowClick.bind(this);
         this.store = this.context;
         this.state = {
-          search: '',
-          imgs: [] 
+          search: ''
         };
     }
 
-    async onSearchSubmit(event) {
-        event.preventDefault();
+    onSearchSubmit(event) {
+      event.preventDefault();
 
-        const result = await SearchService.getImages(this.state.search);
-        this.setState({ imgs: result })
+      this.props.fetchSearchResults(this.state.search);
     };
 
     onSearchInput(event) {
       this.setState({ search: event.target.value });
     };
 
-    onAddToFlowClick (imgSrc) { 
+    onAddToFlowClick (asana) {
       this.props.addAsana({
-        asanaName: this.state.search,
-        asanaSrc: imgSrc
+        id: asana.id,
+        asanaName: asana.asanaName,
+        asanaSrc: asana.asanaSrc
       });
     };
 
     render() {
         return (
-          <div className="search">
-            <form className="search__form" onSubmit={this.onSearchSubmit}>
-              <label> Search asana: </label>
-              <input className="search__input" onChange={this.onSearchInput} />
+          <div className="asanas">
+            <form className="asanas__search-form" onSubmit={this.onSearchSubmit}>
+              <input
+                placeholder={'Search asana'}
+                className="asanas__search-input"
+                onChange={this.onSearchInput}
+              />
             </form>
-            {this.state.imgs.length > 0 &&
-              <div className="search__results">
-                  {this.state.imgs.map((imgSrc, index) => (
-                    <AsanaPicture 
-                      imgSrc={imgSrc}
-                      onClick = {() => this.onAddToFlowClick(imgSrc) }
-                      btnText = 'Add to flow'
-                      key={`imgIndex-${indeex}`}
+            {
+              this.props.loading
+              ? <LoadingIndicator />
+              : this.props.error.isError 
+                ?  <div>{this.props.error.message}</div>
+                : <>
+                    <AsanasList 
+                      asanas={this.props.results}
+                      onItemClick={this.onAddToFlowClick}
+                      btnText="Add to flow"
+                      showTitle={false}
                     />
-                  ))}
-              </div>
+                    {
+                      this.props.results.length > 0 &&
+                      <Pagination 
+                        pageNumber={this.props.resultsPage}
+                        textToSearch={this.state.search}
+                        fetchPage={this.props.fetchSearchResults}
+                      />
+                    }
+                </>
             }
           </div>
         );
@@ -62,24 +74,30 @@ class AsanaSearch extends Component {
 };
 
 const mapStateToProps = (state) => {
-  // const {
-  //   search : {loading, resultsPage, results}
-  // } = state;
+  const {
+    search : {loading, error, results, resultsPage}
+  } = state;
 
-  // return {
-  //   loading,
-  //   resultsPage,
-  //   results
-  // };
+  return {
+    loading,
+    error,
+    resultsPage,
+    results
+  };
+};
 
-  return state;
+const mapDispatchToProps = dispatch => {
+  return {
+    addAsana: asana => {
+      dispatch(addAsana(asana))
+    },
+    fetchSearchResults: (phrase, page) => {
+       dispatch(fetchSearchResults(phrase, page));
+    }
+  }
 };
 
 export default connect(
   mapStateToProps,
-  { 
-    addAsana,
-    requestSearch,
-    searchSuccess
-  }
+  mapDispatchToProps
 )(AsanaSearch);;

@@ -1,13 +1,17 @@
 import { combineReducers } from 'redux';
-import { ADD_ASANA, DELETE_ASANA } from '../actions/actions';
-import { SEARCH_REQUEST, SEARCH_SUCCESS } from '../actions/actions';
+import { ADD_ASANA, DELETE_ASANA, CLEAR_SEQUENCE } from '../static/constants';
+import { SEARCH_REQUEST, SEARCH_SUCCESS, SEARCH_FAILURE } from '../static/constants';
 
 const initialState = {
     search: {
       loading: false,
       phrase: '',
       resultsPage: 0,
-      results: []
+      results: [],
+      error: {
+        isError: false,
+        message: ''
+      }
     },
     sequence: []
   };
@@ -15,17 +19,17 @@ const initialState = {
 
 //utility
 
-function updateObject(oldObject, newValues) {
-  // Encapsulate the idea of passing a new object as the first parameter
-  // to Object.assign to ensure we correctly copy data instead of mutating
-  return Object.assign({}, oldObject, newValues)
-}
+// function updateObject(oldObject, newValues) {
+//   // Encapsulate the idea of passing a new object as the first parameter
+//   // to Object.assign to ensure we correctly copy data instead of mutating
+//   return Object.assign({}, oldObject, newValues)
+// }
 
-function addItemInArray(stateArray, newItem) {
-  const newItems = stateArray.concat(newItem);
+// function addItemInArray(stateArray, newItem) {
+//   const newItems = stateArray.concat(newItem);
 
-  return updateObject(stateArray, { todos: newItems })
-}
+//   return updateObject(stateArray, { todos: newItems })
+// }
 
 const yogaFlowReducer = (state = initialState.sequence, action) => {
   switch (action.type) {
@@ -37,6 +41,8 @@ const yogaFlowReducer = (state = initialState.sequence, action) => {
       });
     case DELETE_ASANA:
       return state.filter(asana => asana.id !== action.payload.id);
+    case CLEAR_SEQUENCE:
+      return initialState.sequence;
     default:
       return state;
   }
@@ -49,16 +55,28 @@ const searchReducer = (state = initialState.search, action) => {
         ...state,
         loading: action.payload.loading,
         phrase: action.payload.phrase,
-        resultsPage: action.payload.page,
+        resultsPage: action.payload.resultsPage,
       });
     case SEARCH_SUCCESS :
       return Object.assign({}, state, {
         ...state,
         loading: action.payload.loading,
-        phrase: action.payload.phrase,
-        resultsPage: action.payload.page,
+        error: {
+          isError: false,
+          message: ''
+        },
+        resultsPage: action.payload.resultsPage,
         results: action.payload.results
       });
+    case SEARCH_FAILURE :
+      return Object.assign({}, state, {
+        ...state,
+        loading: action.payload.loading,
+        error: {
+          isError: true,
+          message: action.payload.error
+        }
+      }); 
     default:
       return state;
   }
