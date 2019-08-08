@@ -1,8 +1,9 @@
 import React from 'react';
-import AsanasList from './asanasList';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-import { deleteAsana,clearSequence } from '../actions/actions';
+import { deleteAsana,clearSequence } from '../../actions/actions';
+import AsanasList from '../asanasList';
+import './style.scss';
 
 const YogaSequence = ({sequence, deleteAsana,clearSequence}) => {
   return (

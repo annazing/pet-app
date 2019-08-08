@@ -7,8 +7,10 @@ import './style.scss';
 // }
 
 const LoadingIndicator = () => (
-  <div className='loading animation-bounce-out'>
-    <img src={loadingSrc}/>
+  <div className='loading'>
+    <div className='loading__indicator animation-bounce-out'>
+      <img  src={loadingSrc}/>
+    </div>
   </div>
 );
 

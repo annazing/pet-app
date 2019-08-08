@@ -1,20 +1,20 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import AsanaPicture from './asanaPicture';
+import AsanaPicture from '../asanaPicture/asanaPicture';
+import './style.scss';
 
 const AsanasList = ({ asanas, onItemClick, btnText, showTitle }) => (
   asanas.length > 0 &&
-  <div className="asanas__list">
+  <div className="grid-asanas">
     {asanas.map((asana, index) => (
-      <div className="asanas__item-container" key={asana.id ? asana.id : `item-index-${index}` }>
-        <p>{index}</p>
-        { showTitle && <p>{asana.asanaName}</p> }
         <AsanaPicture 
-          imgSrc={asana.asanaSrc}
+          asana={asana}
+          index={index}
+          showTitle={showTitle}
           onClick = {() => onItemClick(asana) }
           btnText = {btnText}
+          key={asana.id ? asana.id : `item-index-${index}` }
         />
-      </div>
     ))}
   </div>
 );

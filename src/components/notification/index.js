@@ -2,7 +2,6 @@ import * as React from 'react';
 import LoadingIndicator from '../loading-indicator/index';
 
 const Notification = ({ loading, error, isShowInfo, infoText}) => {
-
   return (
     <div>
       { loading 

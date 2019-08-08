@@ -62,7 +62,6 @@ Purvottanasana<br>
 Salabhasana<br>
 Salamba Sarvangasana<br>
 Salamba Sirsasana<br>
-<br>
 Savasana<br>
 Setu Bandha Sarvangasana<br>
 Sukhasana<br>

@@ -1,0 +1,45 @@
+@import '../../scss/variables';
+
+.asana-picture {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  object-fit: scale-down;
+  &:hover, &:active {
+    box-shadow: 0 0 4px 4px $grey-shadow;
+  }
+
+  &__pic {
+    width: 100%;
+    opacity: 1;
+    display: block;
+    transition: .5s ease;
+  }
+    
+  &__btn {
+    background-color: $grey-transparent;
+    color: white;
+    font-size: 16px;
+    padding: 16px 32px;
+
+    display:inline-block;
+    border:0.1em solid transparent;
+    border-radius:0.12em;
+    box-sizing: border-box;
+    text-decoration:none;
+    text-align:center;
+    &:hover, &:active {
+      outline: none;
+      background-color: $grey-dark;
+      box-shadow: 0 0 4px 4px $grey-shadow;
+    }
+
+    &:focus {
+      outline:0;
+    }
+  }
+}

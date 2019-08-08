@@ -1,0 +1,14 @@
+.pagination {
+    display: flex;
+    justify-content: space-around;
+    margin: 16px 0;
+
+    &__btn {
+        width: 30%;
+    }
+
+    &__number {
+        width: 30%;
+        text-align: center;
+    }
+}

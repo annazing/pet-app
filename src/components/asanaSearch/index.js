@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import AsanasList from './asanasList';
-import Pagination from './pagination/index';
-import Notification from './notification/index'
-import { addAsana, fetchSearchResults } from '../actions/actions';
-import '../scss/app.scss';
+import AsanasList from '../asanasList';
+import Pagination from '../pagination/index';
+import Notification from '../notification/index'
+import { addAsana, fetchSearchResults } from '../../actions/actions';
+import './style.scss';
 
 class AsanaSearch extends Component {
     constructor(props) {
