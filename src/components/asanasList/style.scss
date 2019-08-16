@@ -1,7 +1,20 @@
-.grid-asanas{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 16px;
-    justify-content: center;
-    text-align: center;
+@import '../../scss/mixins';
+
+.list{
+  width: 95vh;
+  margin: auto;
+
+  // &__item {
+  //   display: block;
+  //   width: 30%;
+  //   margin: 0px 14px;
+
+  //   @include mobile-tablet{
+  //     display:flex;
+  //     flex: 1 100%;
+  //     justify-content: center;
+  //     align-items: center;
+  //     flex-wrap: wrap;
+  //   }
+  // }
 }

@@ -13,7 +13,7 @@ const AsanaPicture = ({ asana, index, showTitle, onClick, btnText }) => (
 );
 
 AsanaPicture.propTypes = {
-  asana: PropTypes.string.isRequired,
+  asana: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
   btnText:  PropTypes.string.isRequired
 }

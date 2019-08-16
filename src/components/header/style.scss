@@ -1,10 +1,17 @@
 @import '../../scss/variables';
 
 .header {
-    font-size: 2em;
-    font-weight: 500;
-    color: $white;
-    background: $grey-transparent;
-    text-align: center;
-    padding: 14px;
+  font-family: 'Itim', cursive;
+  font-size: 2em;
+  font-weight: 500;
+  color: $white;
+  background-image: linear-gradient(to bottom, $grey-transparent, $grey-warm), url($body-background);
+  text-align: center;
+  padding: 14px;
+
+  // &--sticky {
+  //   position: fixed;
+  //   top: 0;
+  //   width: 100%;
+  // }
 }

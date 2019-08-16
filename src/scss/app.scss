@@ -1,11 +1,20 @@
 @import './variables';
+@import './mixins';
+@import url('https://fonts.googleapis.com/css?family=Bree+Serif|Chewy|Cormorant+Garamond|Itim|Lexend+Zetta&display=swap');
 
 html {
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
+  height: 100vh;
+  perspective: 1px;
+  transform-style: preserve-3d;
+  overflow-x:hidden;
+  overflow-y:auto;
+  // overflow-y: hidden;
 }
 
 *,
@@ -13,40 +22,21 @@ body {
 *::after {
   box-sizing: inherit;
 }
+.parallax-wrapper {
+  transform-style: preserve-3d;
+  width: 100vw;
+  height:100vh;
+  box-sizing: border-box;
 
-.parallax {
-  perspective: 1px;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background: $grey-transparent;
-
-  &__layer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    &--base {
-      transform: translateZ(0);
-      z-index: 4;
-    }
-
-    &--back {
-      transform: translateZ(-2px) scale(3);
-      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
-      z-index: 3;
-    }
-  }
-
-  &__group {
-    position: relative;
+  &::before {
+    content:"";
+    width: 100vw;
     height: 100vh;
-    transform-style: preserve-3d;
-  }
-
-  &__pattern {
-    background: url($body-background) center center;
+    top:0;
+    left:0;
+    background-image: url($body-background);
+    position: absolute;
+    z-index: -1;
+    transform:translateZ(-1px) scale(2);
   }
 }

@@ -42,13 +42,16 @@ class AsanaSearch extends Component {
 
     render() {
         return (
-          <div className="asanas">
-            <form className="asanas__search-form" onSubmit={this.onSearchSubmit}>
-              <input
-                placeholder={'Search asana'}
-                className="asanas__search-input"
-                onChange={this.onSearchInput}
-              />
+          <div className="search">
+            <form className="search__form" onSubmit={this.onSearchSubmit}>
+              <div className="search__field">
+                <input
+                  placeholder={'Search asana'}
+                  className="search__input effect"
+                  onChange={this.onSearchInput}
+                />
+                <span className="search__focus-border"></span>
+              </div>
             </form>
             <Notification 
               loading={this.props.loading} 
@@ -57,7 +60,7 @@ class AsanaSearch extends Component {
               infoText={'Nothing was found'}
             />
             {
-              this.props.results.length > 0 &&
+              (this.props.results.length > 0 && !this.props.loading) &&
               <>
                 <h1>{this.props.phrase}</h1>
                 <AsanasList 

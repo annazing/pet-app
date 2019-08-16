@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import lotusSrc from '../../static/lotus.png';
 import './style.scss';
 
 const Pagination = ({ textToSearch, pageNumber, fetchPage }) => {
@@ -16,9 +17,19 @@ const Pagination = ({ textToSearch, pageNumber, fetchPage }) => {
 
   return (
     <div className='pagination'>
-      <button className='pagination__btn' onClick={() => onChangePage(-1)}>Previous</button>
-      <p className='pagination__number'>{pageNumberToShow}</p>
-      <button className='pagination__btn' onClick={() => onChangePage(1)}>Next</button>
+      <button className='pagination__btn' onClick={() => onChangePage(-1)}>
+        <img className='pagination__btn pagination__btn-img  pagination__btn-left'src={lotusSrc}/>
+        <p className='pagination__btn-text'>Previous</p>
+      </button>
+      <div className='pagination__page'>
+        <p className='pagination__page-number'>
+          {pageNumberToShow}
+        </p>
+      </div>
+      <button className='pagination__btn' onClick={() => onChangePage(1)}>
+        <p className='pagination__btn-text'>Next</p>
+        <img className='pagination__btn pagination__btn-img  pagination__btn-right'src={lotusSrc}/>
+      </button>
     </div>
   );
 };
